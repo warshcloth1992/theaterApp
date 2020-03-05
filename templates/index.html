@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script
+  		src="https://code.jquery.com/jquery-3.4.1.min.js"
+  		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  		crossorigin="anonymous"></script>
+  	
+	<title></title>
+</head>
+<body>
+	<select id="genreSelector">
+		<option value="">Select genre please</option>
+		{% for genre in genres %}
+			<option value="{{genre}}">
+				{{genre}}
+			</option>
+		{% endfor %}	
+	</select>
+
+	
+
+</body>
+<script type="text/javascript">
+  	function getGenre(event) {
+  		$.get("/genre/" + event.target.value, console.log)
+  	}
+  	const selectElement = document.getElementById("genreSelector")
+  	selectElement.addEventListener("change", getGenre)
+ </script>
+</html>

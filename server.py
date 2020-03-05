@@ -1,10 +1,19 @@
-from flask import Flask 
+from flask import Flask, render_template
 app = Flask(__name__)
 
+genres = {
+	"horror" : [],
+	"action" : [],
+	"romance" : []
+}
 
 @app.route('/')
-def name():
-	return "name"
+def index():
+	return render_template('index.html', genres=genres.keys())
+
+@app.route('/genre/<g>')
+def genre(g=None):
+	return render_template('genre.html')
 
 
 if __name__ == "__main__":
