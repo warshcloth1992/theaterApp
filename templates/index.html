@@ -5,7 +5,7 @@
   		src="https://code.jquery.com/jquery-3.4.1.min.js"
   		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   		crossorigin="anonymous"></script>
-  	
+  	<!--jquery cdn to allow working with jquery-->
 	<title></title>
 </head>
 <body>
@@ -17,15 +17,22 @@
 			</option>
 		{% endfor %}	
 	</select>
-
-	
-
+	<!--for loop that iterates through render_template arg, selector element-->
+	<div id="genrecontent"></div>
+	<!--placeholder div for genrecontent-->
 </body>
 <script type="text/javascript">
+	const contentelement = document.getElementById("genrecontent")	
   	function getGenre(event) {
-  		$.get("/genre/" + event.target.value, console.log)
+  		$.get("/genre/" + event.target.value, template => {
+  			contentelement.innerHTML = template
+  		})
+  	//function gets genre concatinates that with the users selection and inserts the result into the the paths'(genre.html) template
   	}
   	const selectElement = document.getElementById("genreSelector")
+  	//constant variable assigned to the function gets the selection from genreSelector
   	selectElement.addEventListener("change", getGenre)
+  	//
+
  </script>
 </html>
