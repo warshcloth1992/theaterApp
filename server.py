@@ -5,7 +5,11 @@ genres = {
 	"horror" : [
 		{
 			"name": "It",
-			"locations": []
+			"locations": [
+				{
+					"name": "minneapolis"
+				}
+			]
 		},
 		{
 			"name": "Doctor Sleep",
@@ -22,8 +26,8 @@ def index():
 #route to home page from index for genre select element
 @app.route('/genre/<g>')
 def genre(g=None):
-	print(genres.get(g))
-	return render_template('genre.html', genre=g)
+	movies = genres.get(g)
+	return render_template('genre.html', genre=movies)
 #route to the data in genres, prints genre selected and returns genre.html template with incerted data
 
 

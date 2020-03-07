@@ -1,5 +1,16 @@
 <ul>
 {% for movie in genre%}
-	<li></li>
+	<li>{{movie.name}}				
+ 		<ul>
+			{% for location in movie.locations -%}
+					<li>{{location.name}}</li>
+			{% elif location.name | length > 0 -%}
+				no locations playing this movie		
+			{-% endfor %}
+
+<!-- cant make this work?-->
+		</ul>
+ 
+	</li>		
 {% endfor %}		
 </ul>
