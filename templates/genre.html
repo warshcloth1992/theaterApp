@@ -1,16 +1,19 @@
 <ul>
 {% for movie in genre%}
-	<li>{{movie.name}}				
- 		<ul>
-			{% for location in movie.locations -%}
-					<li>{{location.name}}</li>
-			{% elif location.name | length > 0 -%}
-				no locations playing this movie		
-			{-% endfor %}
+	<li>
+		{{movie.name}}
 
-<!-- cant make this work?-->
+		{% if movie.locations | length <= 0 %}
+			<p>no locations playing this movie</p>
+			<!-- div tags not easily read by screen readers -->
+		{% endif %}
+
+		<ul>
+			{% for location in movie.locations %}
+				<li>{{location.name}}</li>
+			{% endfor %}
 		</ul>
- 
+
 	</li>		
 {% endfor %}		
 </ul>
