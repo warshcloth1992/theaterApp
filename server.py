@@ -29,6 +29,7 @@ def genre(g=None):
 	movies = genres.get(g)
 	return render_template('genre.html', genre=movies)
 #route to the data in genres, prints genre selected and returns genre.html template with incerted data
+# @app.route('')
 
 
 if __name__ == "__main__":
