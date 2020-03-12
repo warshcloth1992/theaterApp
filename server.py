@@ -23,13 +23,16 @@ genres = {
 @app.route('/')
 def index():
 	return render_template('index.html', genres=genres.keys())
-#route to home page from index for genre select element
+#route to home page from index for genre select element, why cant i add the css file
 @app.route('/genre/<g>')
 def genre(g=None):
 	movies = genres.get(g)
 	return render_template('genre.html', genre=movies)
-#route to the data in genres, prints genre selected and returns genre.html template with incerted data
-# @app.route('')
+# route to the data in genres, prints genre selected and returns genre.html template with incerted data
+@app.route('new page?')
+def location
+return render_template('style.css', )
+
 
 
 if __name__ == "__main__":
