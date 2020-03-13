@@ -13,8 +13,8 @@
 	<select id="genreSelector">
 		<option value="">Select genre please</option>
 		{% for genre in genres %}
-			<option value="{{genre}}">
-				{{genre}}
+			<option value="{{genre.genre_id}}">
+				{{genre.name}}
 			</option>
 		{% endfor %}	
 	</select>
