@@ -1,7 +1,7 @@
 <ul>
-{% for movie in genre%}
+{% for movie in genres%}
 	<li>
-		{{movie.name}}
+		{{movie.title}}
 
 		{% if movie.locations | length <= 0 %}
 			<p>no locations playing this movie</p>

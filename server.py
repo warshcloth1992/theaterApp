@@ -20,12 +20,13 @@ def index():
 	return render_template('index.html', genres=genres,)
 # route to home page from index for genre select element, why cant i add the css file
 # @app.route('/genre/')
-@app.route('/genre/')
-def genre():
+@app.route('/genre/<mygenre>')
+def genre(mygenre=None):
 	# was (g=None)
-	movies = Movie.query.filter.all()
+	movies = Movie.query.filter(Movie.genre_id == mygenre).all()
+	print(movies[0].location_ids)
 	return render_template('genre.html', genres=movies)
-	print('hello')
+
 
 
 # @app.route('/genres')

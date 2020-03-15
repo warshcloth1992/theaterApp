@@ -1,6 +1,8 @@
 """Models and database functions for Ratings project."""
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import ARRAY
+
 
 # This is the connection to the PostgreSQL database; we're getting
 # this through the Flask-SQLAlchemy helper library. On this, we can
@@ -33,6 +35,11 @@ class Genre(db.Model):
 
         return f"<Genre genre_id={self.genre_id} name={self.name}>"
 
+# association_table = db.Table('association', 
+#     db.Column('location_id', db.Integer, db.ForeignKey('locations.location_id'), primary_key=True),
+#     db.Column('movie_id', db.Integer, db.ForeignKey('movies.movie_id'),primary_key=True),  
+# )
+#maybe explore this more later
 
 class Movie(db.Model):
     """Movie on ratings website."""
@@ -44,13 +51,20 @@ class Movie(db.Model):
                          primary_key=True)
     title = db.Column(db.String(100))
     genre_id = db.Column(db.Integer, db.ForeignKey('genres.genre_id'), nullable=False)
+
     
     genre = db.relationship('Genre', backref='movies')
+    location_ids = db.Column(ARRAY(db.Integer))
+    # locations = db.relationship('Location', 
+    #     secondary=association_table, lazy='subquery',
+    #     backref=db.backref('movies', lazy=True))
+
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Movie movie_id={self.movie_id} title={self.title} genre={self.genre}>"
+        return f"<Movie movie_id={self.movie_id} title={self.title} genre={self.genre} locations={self.location_ids}"
 
 
 class Location(db.Model):
@@ -64,6 +78,8 @@ class Location(db.Model):
     latitude = db.Column(db.Float)
     longetude = db.Column(db.Float)
     name = db.Column(db.String())
+    movie_ids = db.Column(ARRAY(db.Integer))
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
