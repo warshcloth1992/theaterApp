@@ -10,7 +10,15 @@
 
 		<ul>
 			{% for location in movie.locations %}
-				<li>{{location.name}}</li>
+				<li>
+					<a 
+						href="{{location.href}}" 
+						target="_blank" 
+						rel="noreferrer noopener"
+					>
+						{{location.name}}
+					</a>
+				</li>
 			{% endfor %}
 		</ul>
 

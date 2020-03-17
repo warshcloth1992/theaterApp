@@ -78,7 +78,7 @@ class Location(db.Model):
     latitude = db.Column(db.Float)
     longetude = db.Column(db.Float)
     name = db.Column(db.String())
-    movie_ids = db.Column(ARRAY(db.Integer))
+    href = db.Column(db.String(2000))
 
 
     def __repr__(self):
@@ -98,7 +98,6 @@ def connect_to_db(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
-
 
 if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will

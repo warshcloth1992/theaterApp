@@ -7,12 +7,12 @@ from model import Genre, Movie, connect_to_db, db
 from server import app
 
 
-def load_genres(user_filename):
+def load_genres(genre_filename):
     """Load users from u.user into database."""
 
     print("Genres")
 
-    for i, row in enumerate(open(user_filename)):
+    for i, row in enumerate(open(genre_filename)):
         row = row.rstrip()
         genre_id, name = row.split("|")
 
@@ -110,7 +110,7 @@ def set_val_genre_id():
     result = db.session.query(func.max(Genre.genre_id)).one()
     max_id = int(result[0])
 
-    # Set the value for the next user_id to be max_id + 1
+    # Set the value for the next genre_id to be max_id + 1
     query = "SELECT setval('genres_genre_id_seq', :new_id)"
     db.session.execute(query, {'new_id': max_id + 1})
     db.session.commit()

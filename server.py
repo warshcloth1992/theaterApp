@@ -9,11 +9,12 @@ from model import connect_to_db, db, Genre, Movie, Location
 app = Flask(__name__)
 
 app.secret_key = "ABC"
+#needed to use debugger
 
 app.jinja_env.undefined = StrictUndefined
 
 
-#data structure holds movies
+
 @app.route('/')
 def index():
 	genres= Genre.query.all()
@@ -22,14 +23,20 @@ def index():
 # @app.route('/genre/')
 @app.route('/genre/<mygenre>')
 def genre(mygenre=None):
-	# was (g=None)
 	movies = Movie.query.filter(Movie.genre_id == mygenre).all()
-	print(movies[0].location_ids)
+	for movie in movies:
+		movie.locations = []
+		for location_id in movie.location_ids:
+			location = Location.query.filter(Location.location_id == location_id).one()
+			movie.locations.append(location)
 	return render_template('genre.html', genres=movies)
 
+# what movies have been playing this year
+# can they search by title or location 
+# think about different ways to interact 
 
 
-# @app.route('/genres')
+# @app.route('/genres'/'movies'/'locations')
 # def show_all_genres():
 
 # 	# Genre.query.filter(name == 'SciFi').first()
@@ -41,7 +48,6 @@ def genre(mygenre=None):
 # @app.route('new page?')
 # def location
 # return render_template('', )
-
 
 
 if __name__ == "__main__":
