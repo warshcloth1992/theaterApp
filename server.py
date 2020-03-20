@@ -14,21 +14,18 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 
-
 @app.route('/')
 def index():
 	genres= Genre.query.all()
 	return render_template('index.html', genres=genres,)
 # route to home page from index for genre select element, why cant i add the css file
 # @app.route('/genre/')
+
+
 @app.route('/genre/<mygenre>')
 def genre(mygenre=None):
 	movies = Movie.query.filter(Movie.genre_id == mygenre).all()
-	for movie in movies:
-		movie.locations = []
-		for location_id in movie.location_ids:
-			location = Location.query.filter(Location.location_id == location_id).one()
-			movie.locations.append(location)
+
 	return render_template('genre.html', genres=movies)
 
 # what movies have been playing this year
