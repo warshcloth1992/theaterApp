@@ -3,8 +3,24 @@
 import datetime
 from sqlalchemy import func
 
-from model import Genre, Movie, connect_to_db, db
+from model import Genre, Movie, connect_to_db, db, Location
 from server import app
+
+from faker import Faker
+
+faker = Faker()
+
+
+def create_fake_movies():
+    """A short example of how to use faker"""
+
+    genre_id = Genre.query.get(1)
+    location = Location.query.get(1)
+    for i in range(100):
+        movie = Movie(title=faker.sentence(nb_words=2), genre_id=genre_id)
+        movie.locations.append(location)
+        db.session.add(movie)
+        db.session.commit()
 
 
 def load_genres(genre_filename):
