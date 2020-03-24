@@ -3,3 +3,4 @@ lib
 include
 .vagrant
 __pycache__
+templates/API

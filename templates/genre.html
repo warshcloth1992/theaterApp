@@ -36,24 +36,20 @@
 	//get the <span> element that closes the modal	
 		var span = document.getElementByClassName("close")[0]
 	//when the user clicks the button, open the modal
-		buttn.onclick = function {
+		buttn.onclick = function() {
+			console.log("clicked")
 			modalelement.style.display = "block";
 		}	
 	//when the user clicks anywhere outside of the block it closes
-	window.onclick = function(event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
-		}
-	}	
-		
+
   		// function postmovie(event) {
   		// $.post("/genre/" + event.target.value, template => {
   		// 	contentelement.innerHTML = template
   		// })
   	
   	// }
-  	const selectElement = document.getElementById("genreSelector")
+  	// const selectElement = document.getElementById("genreSelector")
   
-  	selectElement.addEventListener("change", getGenre)
+  	 selectElement.addEventListener("change", getGenre)
 
 </script>

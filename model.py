@@ -76,7 +76,7 @@ class Location(db.Model):
                           autoincrement=True,
                           primary_key=True)
     latitude = db.Column(db.Float)
-    longetude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
     name = db.Column(db.String())
     href = db.Column(db.String(2000))
 
