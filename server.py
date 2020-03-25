@@ -24,10 +24,10 @@ def index():
 
 @app.route('/genre/<mygenre>')
 def genre(mygenre=None):
-	movies = Movie.query.filter(Movie.genre_id == mygenre).all()
-
+	movies = Movie.query.filter_by(genre_id=mygenre).all()
+	print(movies)
 	return render_template('genre.html', genres=movies)
-
+# add route to handle search by movie and location
 # what movies have been playing this year
 # can they search by title or location 
 # think about different ways to interact 

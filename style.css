@@ -1,0 +1,10 @@
+#modalbox {
+	position: absolute;
+	display: block;
+	top: 20%;
+	left: 34%;
+	min-height: 250px;
+	min-width: 250px;
+	background-color: lightblue;
+	border: 1px solid blue;
+}

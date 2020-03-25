@@ -1,6 +1,7 @@
 """Models and database functions for Ratings project."""
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 from sqlalchemy.dialects.postgresql import ARRAY
 
 
@@ -15,10 +16,7 @@ db = SQLAlchemy()
 #####################################################################
 # Model definitions
 
-# new_user = User(email='hello@balloonicorn.com', password='rainbows_are_best', age='35', zipcode='55403')
-# new_user.email
-# 'hello@ballonicorn.com'
-# SELECT email FROM USERS WHERE user_id = 1;
+
 
 class Genre(db.Model):
     """Genre of movie."""
@@ -35,9 +33,13 @@ class Genre(db.Model):
 
 
 association_table = db.Table('movies_locations',
-                             db.Column('location_id', db.Integer, db.ForeignKey('locations.location_id')),
-                             db.Column('movie_id', db.Integer, db.ForeignKey('movies.movie_id')),
-                             )
+                             db.Column('location_id',
+                                       db.Integer,
+                                       db.ForeignKey('locations.location_id')),
+                             db.Column('movie_id',
+                                       db.Integer,
+                                       db.ForeignKey('movies.movie_id')),
+)
 
 
 class Movie(db.Model):
@@ -71,11 +73,14 @@ class Location(db.Model):
     name = db.Column(db.String())
     # TODO: Make sure this is a full url with http:// appended, otherwise must add this in templates manually!
     href = db.Column(db.String(2000))
+    movies = db.relationship('Movie',
+                             secondary='movies_locations')
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Location location_id={self.location_id} latitude={self.latitude} longitude={self.longetude} name={self.name}>"
+        return f"<Location location_id={self.location_id} latitude={self.latitude} longitude={self.longitude} name={self.name}>"
 
 
 #####################################################################

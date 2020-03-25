@@ -2,6 +2,7 @@
 
 import datetime
 from sqlalchemy import func
+from flask_sqlalchemy import SQLAlchemy
 
 from model import Genre, Movie, connect_to_db, db, Location
 from server import app
@@ -9,6 +10,17 @@ from server import app
 from faker import Faker
 
 faker = Faker()
+
+def create_googlemaps_href(longitude, latitude):
+    return 'https://www.google.com/maps/place/' + str(longitude) + '+' + str(latitude)
+
+
+def init_db():
+    """Clear existing data and create new tables."""
+    db = SQLAlchemy()
+
+    with current_app.open_resource("schema.sql") as f:
+        db.executescript(f.read().decode("utf8"))
 
 
 def create_fake_movies():
@@ -30,6 +42,7 @@ def load_genres(genre_filename):
 
     for i, row in enumerate(open(genre_filename)):
         row = row.rstrip()
+        
         genre_id, name = row.split("|")
 
         genre = Genre(genre_id=int(genre_id),
@@ -50,73 +63,34 @@ def load_movies(movie_filename):
     for i, row in enumerate(open(movie_filename)):
         row = row.rstrip()
 
-        # clever -- we can unpack part of the row!
-        movie_id, title, released_str, junk, imdb_url = row.split("|")[:5]
+        movie_id, title, genre_id, location_id = row.split("|")
 
-        # The date is in the file as daynum-month_abbreviation-year;
-        # we need to convert it to an actual datetime object.
-
-        if released_str:
-            released_at = datetime.datetime.strptime(released_str, "%d-%b-%Y")
-        else:
-            released_at = None
-
-        # Remove the (YEAR) from the end of the title.
-
-        title = title[:-7]   # " (YEAR)" == 7
-
-        movie = Movie(title=title,
-                      released_at=released_at,
-                      imdb_url=imdb_url)
+        movie = Movie(movie_id=movie_id,
+                      title=title,
+                      genre_id=genre_id)
+        location = Location.query.filter_by(location_id=location_id).one()
+        movie.locations.append(location);
 
         # We need to add to the session or it won't ever be stored
         db.session.add(movie)
-
-        # provide some sense of progress
-        if i % 100 == 0:
-            print(i)
-
     # Once we're done, we should commit our work
     db.session.commit()
 
+def load_locations(location_filename):
+    print('Locations')
 
-# def load_ratings(rating_filename):
-#     """Load ratings from u.data into database."""
+    for i, row in enumerate(open(location_filename)):
+        row = row.rstrip()
 
-#     print("Ratings")
+        location_id, latitude, longitude, name = row.split("|")
 
-#     for i, row in enumerate(open(rating_filename)):
-#         row = row.rstrip()
-
-#         user_id, movie_id, score, timestamp = row.split("\t")
-
-#         user_id = int(user_id)
-#         movie_id = int(movie_id)
-#         score = int(score)
-
-#         # We don't care about the timestamp, so we'll ignore this
-
-#         rating = Rating(user_id=user_id,
-#                         movie_id=movie_id,
-#                         score=score)
-
-#         # We need to add to the session or it won't ever be stored
-#         db.session.add(rating)
-
-#         # provide some sense of progress
-#         if i % 1000 == 0:
-#             print(i)
-
-#             # An optimization: if we commit after every add, the database
-#             # will do a lot of work committing each record. However, if we
-#             # wait until the end, on computers with smaller amounts of
-#             # memory, it might thrash around. By committing every 1,000th
-#             # add, we'll strike a good balance.
-
-#             db.session.commit()
-
-#     # Once we're done, we should commit our work
-#     db.session.commit()
+        location = Location(location_id=location_id,
+                            latitude=latitude,
+                            longitude=longitude,
+                            name=name,
+                            href=create_googlemaps_href(latitude, longitude))
+        db.session.add(location)
+    db.session.commit()    
 
 
 def set_val_genre_id():
@@ -136,10 +110,11 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
 
-    genre_filename = "ratings/solution/genre_seed.txt"
-    movie_filename = "seed_data/u.item"
-    rating_filename = "seed_data/u.data"
+    genre_filename = "seed_data/genre_seed.txt"
+    movie_filename = "seed_data/movie_seed.txt"
+    location_filename = "seed_data/location_seed.txt"
+
     load_genres(genre_filename)
-    # load_movies(movie_filename)
-    # load_ratings(rating_filename)
+    load_locations(location_filename)
+    load_movies(movie_filename)
     set_val_genre_id()

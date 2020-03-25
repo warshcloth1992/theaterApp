@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="/static/style.css">
 	<script
   		src="https://code.jquery.com/jquery-3.4.1.min.js"
   		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -23,14 +24,27 @@
 	<!--placeholder div for genrecontent-->
 	
 	<div id="modalbox" style="display: none;">
-		dfgbedrgbergbr
+		asdfasdf
 	</div>	
 </body>
 <script type="text/javascript">
-	const contentelement = document.getElementById("genrecontent")	
+	const contentelement = document.getElementById("genrecontent")
+	const modalelement = document.getElementById("modalbox")
+
+	function attachGenreButtonEventListeners() {
+		//get the modal
+		//get button that opens the modal	
+		var buttn = document.getElementById("addmoviebutton")
+		//when the user clicks the button, open the modal
+		buttn.onclick = function() {
+			console.log("clicked")
+			modalelement.style.display = "block";
+		}	
+	}
   	function getGenre(event) {
   		$.get("/genre/" + event.target.value, template => {
   			contentelement.innerHTML = template
+  			attachGenreButtonEventListeners()
   		})
   	//function gets genre concatinates that with the users selection and inserts the result into the the paths'(genre.html) template
   	}

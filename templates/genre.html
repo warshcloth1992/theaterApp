@@ -28,28 +28,3 @@
 <li>
 	<button id="addmoviebutton">ADD A MOVIE HERE</button>
 </li>
-<script type="text/javascript">
-	//get the modal
-		const modalelement = document.getElementById("modalbox")
-	//get button that opens the modal	
-		var buttn = document.getElementById("addmoviebutton")
-	//get the <span> element that closes the modal	
-		var span = document.getElementByClassName("close")[0]
-	//when the user clicks the button, open the modal
-		buttn.onclick = function() {
-			console.log("clicked")
-			modalelement.style.display = "block";
-		}	
-	//when the user clicks anywhere outside of the block it closes
-
-  		// function postmovie(event) {
-  		// $.post("/genre/" + event.target.value, template => {
-  		// 	contentelement.innerHTML = template
-  		// })
-  	
-  	// }
-  	// const selectElement = document.getElementById("genreSelector")
-  
-  	 selectElement.addEventListener("change", getGenre)
-
-</script>
