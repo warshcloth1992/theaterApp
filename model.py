@@ -31,7 +31,7 @@ class Genre(db.Model):
 
         return f"<Genre genre_id={self.genre_id} name={self.name}>"
 
-
+#table created to allow cooperation between tables location and movie
 association_table = db.Table('movies_locations',
                              db.Column('location_id',
                                        db.Integer,

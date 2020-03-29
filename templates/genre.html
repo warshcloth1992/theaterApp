@@ -1,29 +1,28 @@
 <ul>
-{% for movie in genres%}
-	<li>
-		{{movie.title}}
+	{% for movie in genres%}
+		<li>
+			{{movie.title}}
 
-		{% if movie.locations | length <= 0 %}
-			<p>no locations playing this movie</p>
-			<!-- div tags not easily read by screen readers -->
-		{% endif %}
+			{% if movie.locations | length <= 0 %}
+				<p>no locations playing this movie</p>
+			{% endif %}
 
-		<ul>
-			{% for location in movie.locations %}
-				<li>
-					<a 
-						href="{{location.href}}" 
-						target="_blank" 
-						rel="noreferrer noopener"
-					>
-						{{location.name}}
-					</a>
-				</li>
-			{% endfor %}
-		</ul>
+			<ul>
+				{% for location in movie.locations %}
+					<li>
+						<a 
+							href="{{location.href}}"
+							target="_blank" 
+							rel="noreferrer noopener"
+						>
+							{{location.name}}
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
 
-	</li>		
-{% endfor %}		
+		</li>		
+	{% endfor %}		
 </ul>
 <li>
 	<button id="addmoviebutton">ADD A MOVIE HERE</button>

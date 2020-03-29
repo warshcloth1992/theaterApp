@@ -1,6 +1,6 @@
 """Utility file to seed ratings database from MovieLens data in seed_data/"""
 
-import datetime
+
 from sqlalchemy import func
 from flask_sqlalchemy import SQLAlchemy
 
@@ -48,18 +48,18 @@ def load_genres(genre_filename):
         genre = Genre(genre_id=int(genre_id),
                       name=name)
 
-        # We need to add to the session or it won't ever be stored
+        # add session to add data
         db.session.add(genre)
 
-    # Once we're done, we should commit our work
+    #commit data
     db.session.commit()
 
 
 def load_movies(movie_filename):
-    """Load movies from u.item into database."""
+    """Load movies from movie_filename.txt into database."""
 
-    print("Movies")
-
+    print("Loading movies...")
+    #map txt information to movie model and insert split rows into database
     for i, row in enumerate(open(movie_filename)):
         row = row.rstrip()
 
@@ -77,7 +77,9 @@ def load_movies(movie_filename):
     db.session.commit()
 
 def load_locations(location_filename):
-    print('Locations')
+    """Load locations from location_filename.txt into database."""
+
+    print('Loading locations...')
 
     for i, row in enumerate(open(location_filename)):
         row = row.rstrip()
@@ -93,19 +95,7 @@ def load_locations(location_filename):
     db.session.commit()    
 
 
-def set_val_genre_id():
-    """Set value for the next user_id after seeding database"""
-
-    # Get the Max user_id in the database
-    result = db.session.query(func.max(Genre.genre_id)).one()
-    max_id = int(result[0])
-
-    # Set the value for the next genre_id to be max_id + 1
-    query = "SELECT setval('genres_genre_id_seq', :new_id)"
-    db.session.execute(query, {'new_id': max_id + 1})
-    db.session.commit()
-
-
+# connects my computer to the database, initializes tables, and inserts seeded data into tables
 if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
@@ -117,4 +107,3 @@ if __name__ == "__main__":
     load_genres(genre_filename)
     load_locations(location_filename)
     load_movies(movie_filename)
-    set_val_genre_id()

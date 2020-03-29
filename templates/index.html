@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!--loads stylesheet onto webpage-->
 	<link rel="stylesheet" type="text/css" href="/static/style.css">
+	<!--jquery cdn to allow working with jquery-->
 	<script
   		src="https://code.jquery.com/jquery-3.4.1.min.js"
   		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   		crossorigin="anonymous"></script>
-  	<!--jquery cdn to allow working with jquery-->
 	<title></title>
 </head>
 <body>
 	<h2 class="panel-heading">WELCOME TO THE THUNDERDOME</h2>
+	<!--selector element for choosing genre-->
 	<select id="genreSelector">
 		<option value="">Select genre please</option>
 		{% for genre in genres %}
@@ -19,17 +21,27 @@
 			</option>
 		{% endfor %}	
 	</select>
-	<!--for loop that iterates through render_template arg, selector element-->
 	<div id="genrecontent"></div>
 	<!--placeholder div for genrecontent-->
 	
 	<div id="modalbox" style="display: none;">
-		asdfasdf
+		<form>
+			<label>Missing Movies</label>
+			<input type="text" name="Movie">
+			<label>Genre</label>
+			<input type="text" name="Genre">
+			<input type="submit">
+		</form>
+		<div id="modalbox-msg">
+			<!-- error msg -->
+		</div>	
 	</div>	
 </body>
 <script type="text/javascript">
 	const contentelement = document.getElementById("genrecontent")
 	const modalelement = document.getElementById("modalbox")
+	const modalmsgelement = document.getElementById("modalbox-msg")
+	const modalboxSubmit = document.getElementById("modalbox-submit")
 
 	function attachGenreButtonEventListeners() {
 		//get the modal
@@ -41,17 +53,35 @@
 			modalelement.style.display = "block";
 		}	
 	}
+	// add newmovie
+	function submitMovie(event){
+		event.preventDefault();
+		const { Movie, Genre } = event.target.elements
+		$.post(
+			"/new-movie", 
+			{ movie: Movie.value, genre: Genre.value },
+			msg => {
+				if (msg === "unknown genre") {
+					modalmsgelement.innerHTML = "INVALID GENRE"
+				} else {
+					window.location = event.target.action
+				}
+			}
+		)
+	}
+	// 
   	function getGenre(event) {
   		$.get("/genre/" + event.target.value, template => {
   			contentelement.innerHTML = template
   			attachGenreButtonEventListeners()
   		})
-  	//function gets genre concatinates that with the users selection and inserts the result into the the paths'(genre.html) template
+  	//function gets genre, concatinates that with the users selection and inserts the result into the the paths'(genre.html) template
   	}
   	const selectElement = document.getElementById("genreSelector")
   	//constant variable assigned to the function gets the selection from genreSelector
   	selectElement.addEventListener("change", getGenre)
-  	//
+  	modalelement.addEventListener("submit", submitMovie)
+  	
 
  </script>
 </html>
