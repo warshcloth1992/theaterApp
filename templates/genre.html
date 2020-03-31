@@ -2,6 +2,8 @@
 	{% for movie in genres%}
 		<li>
 			{{movie.title}}
+			<button onclick="deleteMovie('{{movie.movie_id}}')">delete</button>
+
 
 			{% if movie.locations | length <= 0 %}
 				<p>no locations playing this movie</p>

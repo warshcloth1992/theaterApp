@@ -11,7 +11,7 @@
 	<title></title>
 </head>
 <body>
-	<h2 class="panel-heading">WELCOME TO THE THUNDERDOME</h2>
+	<h2 class="panel-heading">What's your movie mood?</h2>
 	<!--selector element for choosing genre-->
 	<select id="genreSelector">
 		<option value="">Select genre please</option>
@@ -21,8 +21,8 @@
 			</option>
 		{% endfor %}	
 	</select>
+	<!--placeholder div for movie information-->
 	<div id="genrecontent"></div>
-	<!--placeholder div for genrecontent-->
 	
 	<div id="modalbox" style="display: none;">
 		<form>
@@ -38,29 +38,42 @@
 	</div>	
 </body>
 <script type="text/javascript">
+	function deleteMovie(movieId) {
+		$.post(
+			"/delete-movie",
+			{ movieId: movieId },
+			console.log
+		)
+	}
 	const contentelement = document.getElementById("genrecontent")
 	const modalelement = document.getElementById("modalbox")
 	const modalmsgelement = document.getElementById("modalbox-msg")
 	const modalboxSubmit = document.getElementById("modalbox-submit")
+	let ismodalopen = false
 
-	function attachGenreButtonEventListeners() {
+	function assignAddmovieOnclick() {
 		//get the modal
 		//get button that opens the modal	
 		var buttn = document.getElementById("addmoviebutton")
 		//when the user clicks the button, open the modal
 		buttn.onclick = function() {
-			console.log("clicked")
 			modalelement.style.display = "block";
-		}	
+			setTimeout(
+				function() {
+					ismodalopen = true
+				},
+				0
+			)
+		}
 	}
 	// add newmovie
-	function submitMovie(event){
+	function submitMovie(event) {
 		event.preventDefault();
 		const { Movie, Genre } = event.target.elements
 		$.post(
 			"/new-movie", 
 			{ movie: Movie.value, genre: Genre.value },
-			msg => {
+			function(msg) {
 				if (msg === "unknown genre") {
 					modalmsgelement.innerHTML = "INVALID GENRE"
 				} else {
@@ -69,19 +82,33 @@
 			}
 		)
 	}
-	// 
-  	function getGenre(event) {
-  		$.get("/genre/" + event.target.value, template => {
-  			contentelement.innerHTML = template
-  			attachGenreButtonEventListeners()
-  		})
-  	//function gets genre, concatinates that with the users selection and inserts the result into the the paths'(genre.html) template
-  	}
-  	const selectElement = document.getElementById("genreSelector")
-  	//constant variable assigned to the function gets the selection from genreSelector
-  	selectElement.addEventListener("change", getGenre)
-  	modalelement.addEventListener("submit", submitMovie)
-  	
 
+	//function gets genre, concatinates that with the users selection and gets movies list by genre
+  	function getGenre(event) {
+  		$.get(
+  			"/genre/" + event.target.value,
+  			function(moviesBygenreTemplate) {
+  				contentelement.innerHTML = moviesBygenreTemplate
+  				assignAddmovieOnclick()
+  			}
+  		)
+  	}
+  	
+  	//constant variable assigned to the function gets the selection from genreSelector
+  	const selectElement = document.getElementById("genreSelector")
+ 
+  	document.onclick = function closeModal(e) {
+  		if (ismodalopen && !modalelement.contains(e.target)) {
+  			modalelement.style.display = "none";
+  			setTimeout(
+				function() {
+					ismodalopen = false
+				},
+				0
+			)
+  		}
+  	}
+  	selectElement.onchange = getGenre
+  	modalelement.onsubmit = submitMovie
  </script>
 </html>

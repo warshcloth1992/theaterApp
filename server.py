@@ -35,8 +35,17 @@ def new_movie():
                   genre_id=genre_id)
 	db.session.add(movie)
 	db.session.commit()
-	return 'success'	
+	return 'success'
 
+@app.route('/delete-movie', methods=['POST'])
+def delete_movie():
+	payload = request.form.to_dict()
+	print(payload)
+	title = payload.get('movie')
+	movie = Movie.query.filter_by(movie_id=payload.get('movieId')).one()
+	db.session.delete(movie)
+	db.session.commit()
+	return 'success'
 
 # add route to handle search by movie and location
 @app.route('/genre/<mygenre>')
