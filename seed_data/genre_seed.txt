@@ -1,1 +1,15 @@
-1|Romance
+1|Fantasy
+2|Romance
+3|Science Fiction
+4|Horror
+5|Adventure
+6|Western
+7|Action
+8|Animation
+9|Drama
+10|Musical
+11|Documentary 
+12|Epic
+13|Noir
+14|Comedy
+15|Parody Film

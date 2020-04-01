@@ -5,6 +5,9 @@
 	left: 34%;
 	min-height: 250px;
 	min-width: 250px;
-	background-color: lightblue;
-	border: 1px solid blue;
+	border-radius: 25px;
+  background: #17a2b8;
+  padding: 20px;
+  width: 200px;
+  height: 150px;
 }

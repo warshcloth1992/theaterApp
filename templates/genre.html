@@ -2,7 +2,7 @@
 	{% for movie in genres%}
 		<li>
 			{{movie.title}}
-			<button onclick="deleteMovie('{{movie.movie_id}}')">delete</button>
+			<button type="button" class="btn btn-danger" onclick="deleteMovie('{{movie.movie_id}}')">delete</button>
 
 
 			{% if movie.locations | length <= 0 %}
@@ -27,5 +27,5 @@
 	{% endfor %}		
 </ul>
 <li>
-	<button id="addmoviebutton">ADD A MOVIE HERE</button>
+	<button type="button" class="btn btn-info" id="addmoviebutton">ADD A MOVIE HERE</button>
 </li>
